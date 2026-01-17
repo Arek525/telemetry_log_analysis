@@ -1,0 +1,104 @@
+####################################
+# SYSTEM / OS
+####################################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Windows alternate data streams (ADS)
+*:Zone.Identifier
+
+####################################
+# PYTHON
+####################################
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+.venv/
+venv/
+ENV/
+env/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+####################################
+# JUPYTER
+####################################
+.ipynb_checkpoints/
+*.nbconvert.ipynb
+
+####################################
+# DATA / LOGS (BIG FILES)
+####################################
+logs.csv
+logs*.csv
+*.parquet
+*.avro
+*.orc
+
+# Stats / generated metadata
+*.stats.json
+*.metrics.json
+
+####################################
+# EXPERIMENT OUTPUTS
+####################################
+plots/
+figures/
+charts/
+reports/
+output/
+results/
+models/
+checkpoints/
+
+####################################
+# ML / DATA SCIENCE
+####################################
+*.pkl
+*.joblib
+*.h5
+*.onnx
+
+####################################
+# SPARK
+####################################
+spark-warehouse/
+metastore_db/
+*.jar
+
+####################################
+# R
+####################################
+.Rhistory
+.RData
+.Rproj.user/
+
+####################################
+# IDE
+####################################
+.vscode/
+.idea/
+*.iml
+
+####################################
+# BUILD / TEMP
+####################################
+build/
+dist/
+tmp/
+temp/
+.cache/
+
+####################################
+# DOTENV / SECRETS
+####################################
+.env
+.env.*
