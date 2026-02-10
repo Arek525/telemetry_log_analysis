@@ -3,9 +3,7 @@ import pandas as pd
 spikes_by_latency = set()
 spikes_by_cpu = set()
 spikes_by_qps = set()
-latency_spike = 0
-cpu_spike = 0
-qps_spike = 0
+services = {}
 metrics = {
   "lat": {"tp":0,"fp":0,"tn":0,"fn":0},
   "cpu": {"tp":0,"fp":0,"tn":0,"fn":0},
@@ -31,15 +29,11 @@ def is_spike(data):
     print(f"Spikes detected by CPU: {len(spikes_by_cpu)}")
     print(f"Spikes detected by QPS: {len(spikes_by_qps)}")
     print("Total (sum):", len(spikes_by_latency) + len(spikes_by_cpu) + len(spikes_by_qps))
-    # print(f"True Positives (TP): Latency={metrics['lat']['tp']}, CPU={metrics['cpu']['tp']}, QPS={metrics['qps']['tp']}")
-    # print(f"False Positives (FP): Latency={metrics['lat']['fp']}, CPU={metrics['cpu']['fp']}, QPS={metrics['qps']['fp']}")
-    # print(f"True Negatives (TN): Latency={metrics['lat']['tn']}, CPU={metrics['cpu']['tn']}, QPS={metrics['qps']['tn']}")
-    # print(f"False Negatives (FN): Latency={metrics['lat']['fn']}, CPU={metrics['cpu']['fn']}, QPS={metrics['qps']['fn']}")
     print(f"True Positives (TP): {metrics['lat']['tp']/(metrics['lat']['tp'] + metrics['lat']['fn'] + 1e-10):.2%} (Latency), {metrics['cpu']['tp']/(metrics['cpu']['tp'] + metrics['cpu']['fn'] + 1e-10):.2%} (CPU), {metrics['qps']['tp']/(metrics['qps']['tp'] + metrics['qps']['fn'] + 1e-10):.2%} (QPS)")
     print(f"False Positives (FP): {metrics['lat']['fp']/(metrics['lat']['fp'] + metrics['lat']['tn'] + 1e-10):.2%} (Latency), {metrics['cpu']['fp']/(metrics['cpu']['fp'] + metrics['cpu']['tn'] + 1e-10):.2%} (CPU), {metrics['qps']['fp']/(metrics['qps']['fp'] + metrics['qps']['tn'] + 1e-10):.2%} (QPS)")
     print(f"True Negatives (TN): {metrics['lat']['tn']/(metrics['lat']['tn'] + metrics['lat']['fp'] + 1e-10):.2%} (Latency), {metrics['cpu']['tn']/(metrics['cpu']['tn'] + metrics['cpu']['fp'] + 1e-10):.2%} (CPU), {metrics['qps']['tn']/(metrics['qps']['tn'] + metrics['qps']['fp'] + 1e-10):.2%} (QPS)")
     print(f"False Negatives (FN): {metrics['lat']['fn']/(metrics['lat']['fn'] + metrics['lat']['tp'] + 1e-10):.2%} (Latency), {metrics['cpu']['fn']/(metrics['cpu']['fn'] + metrics['cpu']['tp'] + 1e-10):.2%} (CPU), {metrics['qps']['fn']/(metrics['qps']['fn'] + metrics['qps']['tp'] + 1e-10):.2%} (QPS)")
-    return spikes_by_latency, spikes_by_cpu, spikes_by_qps
+    return services
 
 def is_spike_by_latency(data,k=3):
     m = metrics["lat"]
@@ -47,6 +41,8 @@ def is_spike_by_latency(data,k=3):
     average_latency = data["LatencyMs"].mean()
     standard_deviation_latency = data["LatencyMs"].std()
     for row in data.itertuples():
+        if(row.SourceSystem not in services):
+            services[row.SourceSystem] = {"total_spikes": 0, "latency": 0, "cpu": 0, "qps": 0}
         if(row.LatencyMs > k * median_latency or row.LatencyMs >  average_latency +  k * standard_deviation_latency):
             # print(f"Spike detected by Latency at {row.Index} with Latency={row.LatencyMs} (median={median_latency}, average={average_latency})")
             if(row.IsSpikeByLatency):
@@ -54,6 +50,8 @@ def is_spike_by_latency(data,k=3):
             else:
                 m["fp"] += 1
             spikes_by_latency.add(row.Index)
+            services[row.SourceSystem]["total_spikes"] += 1
+            services[row.SourceSystem]["latency"] += 1
         elif (not row.IsSpikeByLatency):
             m["tn"] += 1
         else:
@@ -65,6 +63,8 @@ def is_spike_by_cpu(data,k=2):
     average_cpu = data["CpuUsage"].mean()
     standard_deviation_cpu = data["CpuUsage"].std()
     for row in data.itertuples():
+        if(row.SourceSystem not in services):
+            services[row.SourceSystem] = {"total_spikes": 0, "latency": 0, "cpu": 0, "qps": 0}
         if(row.CpuUsage > k * median_cpu or row.CpuUsage > average_cpu + k * standard_deviation_cpu):
             # print("CPU: ",row.CpuUsage, k * median_cpu, average_cpu + k * standard_deviation_cpu)
             # print(f"Detected spike by CPU: {k * median_cpu}, {average_cpu + k * standard_deviation_cpu}")
@@ -74,6 +74,8 @@ def is_spike_by_cpu(data,k=2):
             else:
                 m["fp"] += 1
             spikes_by_cpu.add(row.Index)
+            services[row.SourceSystem]["total_spikes"] += 1
+            services[row.SourceSystem]["cpu"] += 1
         else:
             if(not row.IsSpikeByCpu):
                 m["tn"] += 1
@@ -85,6 +87,8 @@ def is_spike_by_qps(data,k=3):
     median_qps = data["LocalQps"].median()
     standard_deviation_qps = data["LocalQps"].std()
     for row in data.itertuples():
+        if(row.SourceSystem not in services):
+            services[row.SourceSystem] = {"total_spikes": 0, "latency": 0, "cpu": 0, "qps": 0}
         if(row.LocalQps > k * median_qps or row.LocalQps > median_qps + k * standard_deviation_qps):
             # print("QPS: ",row.LocalQps, k * median_qps, median_qps + k * standard_deviation_qps)
             # print(f"Detected spike by QPS: {k * median_qps}, {median_qps + k * standard_deviation_qps}")
@@ -94,6 +98,8 @@ def is_spike_by_qps(data,k=3):
             else:
                 m["fp"] += 1
             spikes_by_qps.add(row.Index)
+            services[row.SourceSystem]["total_spikes"] += 1
+            services[row.SourceSystem]["qps"] += 1
         else:
             if(not row.IsSpikeByQps):
                 m["tn"] += 1

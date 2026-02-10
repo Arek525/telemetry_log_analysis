@@ -19,17 +19,9 @@ df = pd.concat(
     [df.drop(columns=["AttributesJson"]), attributes_df],
     axis=1
 )
-# latency_spike = df["IsSpikeByLatency"].sum()
-# cpu_spike = df["IsSpikeByCpu"].sum()
-# qps_spike = df["IsSpikeByQps"].sum()
-# print("Spike detection results - oryginalne:")
-# print(f"Spike'ów wykrytych przez Latency: {latency_spike}")
-# print(f"Spike'ów wykrytych przez CPU: {cpu_spike}")
-# print(f"Spike'ów wykrytych przez QPS: {qps_spike}")
-# print("Liczba spike'ów: ", latency_spike + cpu_spike + qps_spike)
+# print(df.head())
 # wykrywanie spike'ów
-is_spike(df)
-# is_spike(df,latency_spike,cpu_spike,qps_spike)
+print(is_spike(df))
 # 
 # events_count = len(df)
 # transactions_count = df["TransactionId"].nunique()
