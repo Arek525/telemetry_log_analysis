@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import json
 import matplotlib.pyplot as plt
+from distribiution.dist import get_distributions
 
 
 df = pd.read_csv("logs.csv",sep=";")
@@ -22,3 +23,8 @@ correlations_count = df["CorrelationId"].nunique()
 print(f"Liczba eventów: {events_count}")
 print(f"Liczba transakcji (TransactionId): {transactions_count}")
 print(f"Liczba korelacji (CorrelationId): {correlations_count}")
+
+get_distributions(df)
+
+
+
