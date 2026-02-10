@@ -4,7 +4,7 @@ import json
 import matplotlib.pyplot as plt
 from basic_info.index import basic_info
 from binning_var_entropy.index import b_v_e
-
+from failure_detection.index import failure_detection
 
 df = pd.read_csv("logs.csv",sep=";")
 
@@ -26,9 +26,10 @@ print(f"Liczba transakcji (TransactionId): {transactions_count}")
 print(f"Liczba korelacji (CorrelationId): {correlations_count}")
 
 # podstawowe informacje
-basic_info(df)
+# basic_info(df)
 
 
 #binning wariancja entropia balance ratio
-b_v_e(df)
+# b_v_e(df)
 
+failure_detection(df, stats_path="SyntheticLogGenerator/logs.csv.stats.json")

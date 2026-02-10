@@ -1,10 +1,11 @@
 import numpy as np
+import pandas as pd
 
 METRIC = "LatencyMs"
 BINS = 2
 
 
-def b_v_e():
+def b_v_e(df):
     metric_all = pd.to_numeric(df[METRIC], errors="coerce").dropna()
     bins = np.histogram_bin_edges(metric_all, bins=BINS)
     counts, _ = np.histogram(metric_all, bins=bins)
