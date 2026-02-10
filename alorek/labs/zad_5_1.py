@@ -6,7 +6,7 @@ from pathlib import Path
 # ==============================
 # Konfiguracja
 # ==============================
-CSV_PATH = "../logs.csv"
+CSV_PATH = "..SyntheticLogGenerator/logs.csv"
 PLOTS_DIR = "plots"
 BINS = 50
 
