@@ -105,3 +105,6 @@ temp/
 
 bin/
 obj/
+
+*lock.logs.csv#
+idt.sln
