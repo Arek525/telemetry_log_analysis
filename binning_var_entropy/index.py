@@ -1,21 +1,10 @@
-from pathlib import Path
-
 import numpy as np
-import pandas as pd
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-CSV_PATH = ROOT_DIR / "SyntheticLogGenerator" / "logs.csv"
 METRIC = "LatencyMs"
 BINS = 2
 
 
-def main():
-    print("=== Zadanie 5.2 - binning ===")
-    print(f"Plik: {CSV_PATH}")
-    print(f"Metryka: {METRIC}, liczba binow: {BINS}")
-    df = pd.read_csv(CSV_PATH, sep=";", usecols=[METRIC])
-    print(f"Liczba eventow: {len(df)}")
-
+def b_v_e():
     metric_all = pd.to_numeric(df[METRIC], errors="coerce").dropna()
     bins = np.histogram_bin_edges(metric_all, bins=BINS)
     counts, _ = np.histogram(metric_all, bins=bins)
@@ -29,7 +18,6 @@ def main():
         f"Balance max/min: {stats['balance_max_min']} | "
         f"Balance max/mediana: {stats['balance_max_median']}"
     )
-    print("\nZadanie 5.2 ZAKONCZONE")
 
 
 def compute_stats(counts: np.ndarray) -> dict:
@@ -66,7 +54,3 @@ def compute_stats(counts: np.ndarray) -> dict:
 def print_counts(bins: np.ndarray, counts: np.ndarray) -> None:
     for left, right, count in zip(bins[:-1], bins[1:], counts):
         print(f"[{left:.2f}, {right:.2f}): {count}")
-
-
-if __name__ == "__main__":
-    main()
