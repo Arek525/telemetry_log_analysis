@@ -66,6 +66,8 @@ def is_spike_by_cpu(data,k=2):
     standard_deviation_cpu = data["CpuUsage"].std()
     for row in data.itertuples():
         if(row.CpuUsage > k * median_cpu or row.CpuUsage > average_cpu + k * standard_deviation_cpu):
+            # print("CPU: ",row.CpuUsage, k * median_cpu, average_cpu + k * standard_deviation_cpu)
+            # print(f"Detected spike by CPU: {k * median_cpu}, {average_cpu + k * standard_deviation_cpu}")
             # print(f"Spike detected by CPU at {row.Index} with CpuUsage={row.CpuUsage} (median={median_cpu}, average={average_cpu})")
             if(row.IsSpikeByCpu):
                 m["tp"] += 1
@@ -84,6 +86,8 @@ def is_spike_by_qps(data,k=3):
     standard_deviation_qps = data["LocalQps"].std()
     for row in data.itertuples():
         if(row.LocalQps > k * median_qps or row.LocalQps > median_qps + k * standard_deviation_qps):
+            # print("QPS: ",row.LocalQps, k * median_qps, median_qps + k * standard_deviation_qps)
+            # print(f"Detected spike by QPS: {k * median_qps}, {median_qps + k * standard_deviation_qps}")
             # print(f"Spike detected by Local QPS at {row.Index} with LocalQps={row.LocalQps} (median={median_qps}, average={average_qps})")
             if(row.IsSpikeByQps):
                 m["tp"] += 1
