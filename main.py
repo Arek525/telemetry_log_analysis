@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from basic_info.index import basic_info
 from binning_var_entropy.index import b_v_e
 from anomaly_detection.index import anomaly_detection
+from root_cause_analysis.index import root_cause_analysis
 
 df = pd.read_csv("logs.csv",sep=";")
 
@@ -24,4 +25,6 @@ df = pd.concat(
 #binning wariancja entropia balance ratio
 # b_v_e(df)
 
-anomaly_detection(df)
+# anomaly_detection(df)
+
+root_cause_analysis(df)
