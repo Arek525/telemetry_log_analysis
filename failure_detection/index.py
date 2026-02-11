@@ -3,11 +3,6 @@ import numpy as np
 import pandas as pd
 
 
-LATENCY_THRESHOLD = 87.91 + 2 * 213.69
-DISKQ_THRESHOLD = 14.08 + 3 * 20.8
-NETERR_THRESHOLD = 1.59 + 3 * 2.94
-CPU_THRESHOLD = 36.05 + 3 * 17.96
-
 SCORE_THRESHOLD = 6.5
 
 
