@@ -5,6 +5,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import precision_score, recall_score, f1_score
 
 def anomaly_detection(df, out_path="anomaly_detection_results.csv"):
+    print("\n=== ANOMALY DETECTION (Isolation Forest) ===")
+
     features = [
         "LatencyMs",
         "CpuUsage",
@@ -15,6 +17,8 @@ def anomaly_detection(df, out_path="anomaly_detection_results.csv"):
         "RequestSizeBytes",
         "ResponseSizeBytes",
     ]
+    print(f"Zakres danych: {len(df):,} rekordow")
+    print(f"Cechy modelu: {', '.join(features)}")
 
     X = df[features].copy().fillna(df[features].mean())
     scaler = StandardScaler()
@@ -23,7 +27,9 @@ def anomaly_detection(df, out_path="anomaly_detection_results.csv"):
     error_5xx = ((df["EventCode"] >= 500) & (df["EventCode"] < 600)).sum()
     base_rate = error_5xx / len(df)
     contamination = max(0.00001, min(0.5, base_rate / 10))
-    print(f"contamination={contamination:.6f} (5xx_rate/10, 5xx={error_5xx})")
+    print("\nParametry modelu:")
+    print(f"- contamination: {contamination:.6f} (5xx_rate/10, 5xx={error_5xx})")
+    print("- n_estimators: 100")
 
     model = IsolationForest(
         contamination=contamination,
@@ -37,7 +43,9 @@ def anomaly_detection(df, out_path="anomaly_detection_results.csv"):
     df["IF_AnomalyScore"] = scores
 
     detected = df["IF_Anomaly"].sum()
-    print(f"Wykryto anomalii: {detected}")
+    print("\nWynik detekcji:")
+    print(f"- Wykryto anomalii przez Isolation Forest: {detected:,}")
+    print(f"- Udzial oznaczonych anomalii: {detected / len(df):.4%}")
 
     if "IsAnomaly" in df.columns:
         y_true = df["IsAnomaly"].values
@@ -45,12 +53,15 @@ def anomaly_detection(df, out_path="anomaly_detection_results.csv"):
         prec = precision_score(y_true, y_pred, zero_division=0)
         rec = recall_score(y_true, y_pred, zero_division=0)
         f1 = f1_score(y_true, y_pred, zero_division=0)
-        print(f"Precision: {prec:.4f}, Recall: {rec:.4f}, F1: {f1:.4f}")
+        print("\nEwaluacja (porownanie do IsAnomaly):")
+        print(f"- Precision: {prec:.4f}")
+        print(f"- Recall: {rec:.4f}")
+        print(f"- F1-score: {f1:.4f}")
         tp = int(((y_true == 1) & (y_pred == 1)).sum())
         tn = int(((y_true == 0) & (y_pred == 0)).sum())
         fp = int(((y_true == 0) & (y_pred == 1)).sum())
         fn = int(((y_true == 1) & (y_pred == 0)).sum())
-        print(f"TP={tp}  TN={tn}  FP={fp}  FN={fn}")
+        print(f"- Confusion matrix: TP={tp}  TN={tn}  FP={fp}  FN={fn}")
 
     # Top 3 scenariusze wg Isolation Forest
     if "Scenario" in df.columns:
@@ -107,4 +118,5 @@ def anomaly_detection(df, out_path="anomaly_detection_results.csv"):
                 print("- zweryfikuj limity i alokacje obiektów")
             else:
                 print("- przeanalizuj kombinacje cech i korelacje z ruchem")
+    print("=== KONIEC ANOMALY DETECTION ===")
     return df
