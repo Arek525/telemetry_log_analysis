@@ -7,6 +7,8 @@ import json
 import time
 
 import pandas as pd
+from Trends.trends_plot import plot_trends
+
 
 @dataclass(frozen=True)
 class Config:
@@ -231,6 +233,9 @@ def run_analysis(df_in: pd.DataFrame) -> None:
         print(f"F1:        {f1:.3f}")    
     
     print(f"Czas wykonania [s]: {elapsed:.2f}")
+    
+    # Generate visualization
+    plot_trends(det, cfg, output_path="trend_analysis.png")
 
 if __name__ == "__main__":
     # For testing, assumes main.py logic creates df
