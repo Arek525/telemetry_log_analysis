@@ -1,11 +1,11 @@
 {
   "OutputPath": "logs.csv",
   "TargetSizeGb": 1.0,
-  "Seed": 123,
+  "Seed": 123456,
   "SystemCount": 6,
 
   "ExpectedSpikeWindows": 10,
-  "ExpectedFailureWindows": 5,
+  "ExpectedFailureWindows": 12,
   "ExpectedTrendWindows": 5,
   "AnomalyRate": 0.0005,
 
