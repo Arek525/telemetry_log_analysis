@@ -111,8 +111,8 @@ def predictions(
     n_prefix=3,
     test_size=0.2,
     random_state=42,
-    max_event_rows=120000,
-    max_sequence_transactions=50000,
+    max_event_rows=None,
+    max_sequence_transactions=None,
 ):
     df = data.copy()
 
