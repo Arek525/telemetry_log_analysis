@@ -10,10 +10,11 @@ DEFAULT_LIMIT = None
 
 
 def b_v_e(df, metric="LatencyMs", bins_count=20):
-    # 1) Rozbicie AttributesJson na kolumny
-    attrs = df["AttributesJson"].fillna("{}").apply(json.loads)
-    attrs_df = pd.json_normalize(attrs)
-    df = pd.concat([df.drop(columns=["AttributesJson"]), attrs_df], axis=1)
+    # 1) Rozbicie AttributesJson na kolumny (jeśli jeszcze nie rozbite)
+    if "AttributesJson" in df.columns:
+        attrs = df["AttributesJson"].fillna("{}").apply(json.loads)
+        attrs_df = pd.json_normalize(attrs)
+        df = pd.concat([df.drop(columns=["AttributesJson"]), attrs_df], axis=1)
 
     # 2) Przygotowanie metryki i binow
     metric_values = pd.to_numeric(df[metric], errors="coerce")
