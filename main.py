@@ -8,6 +8,8 @@ from anomaly_detection.index import anomaly_detection
 from failure_detection.index import failure_detection
 from root_cause_analysis.index import root_cause_analysis
 from spikes.spike_detector import is_spike
+import Trends.trends_analytics as trends
+import clustering.kmeans_analytics as kmeans
 
 df = pd.read_csv("logs.csv",sep=";")
 
@@ -37,3 +39,9 @@ failure_detection(df)
 
 # root cause analysis
 root_cause_analysis(df)
+
+# trends analysis
+trends.run_analysis(df)
+
+# k-means clustering analysis
+kmeans.run_analysis(df)
