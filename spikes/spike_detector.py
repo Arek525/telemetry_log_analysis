@@ -24,15 +24,23 @@ def is_spike(data):
     is_spike_by_latency(data)
     is_spike_by_cpu(data)
     is_spike_by_qps(data)
-    print("Spike detection results - moje:")
-    print(f"Spikes detected by Latency: {len(spikes_by_latency)}")
-    print(f"Spikes detected by CPU: {len(spikes_by_cpu)}")
-    print(f"Spikes detected by QPS: {len(spikes_by_qps)}")
+    print('\n=========================================')
+    print("SPIKES BY SERVICE:")
+    for service, counts in services.items():
+        print(f"Service: {service}, Total Spikes: {counts['total_spikes']}, Latency Spikes: {counts['latency']}, CPU Spikes: {counts['cpu']}, QPS Spikes: {counts['qps']}")
+    print("\n===============================\n")
+    print("OVERALL SPIKES:\n")
+    print(f"Overall spikes detected by Latency: {len(spikes_by_latency)}")
+    print(f"Overall spikes detected by CPU: {len(spikes_by_cpu)}")
+    print(f"Overall spikes detected by QPS: {len(spikes_by_qps)}")
     print("Total (sum):", len(spikes_by_latency) + len(spikes_by_cpu) + len(spikes_by_qps))
+    print("\n===============================\n")
+    print("POSITIVE/NEGATIVE RATES:\n")
     print(f"True Positives (TP): {metrics['lat']['tp']/(metrics['lat']['tp'] + metrics['lat']['fn'] + 1e-10):.2%} (Latency), {metrics['cpu']['tp']/(metrics['cpu']['tp'] + metrics['cpu']['fn'] + 1e-10):.2%} (CPU), {metrics['qps']['tp']/(metrics['qps']['tp'] + metrics['qps']['fn'] + 1e-10):.2%} (QPS)")
     print(f"False Positives (FP): {metrics['lat']['fp']/(metrics['lat']['fp'] + metrics['lat']['tn'] + 1e-10):.2%} (Latency), {metrics['cpu']['fp']/(metrics['cpu']['fp'] + metrics['cpu']['tn'] + 1e-10):.2%} (CPU), {metrics['qps']['fp']/(metrics['qps']['fp'] + metrics['qps']['tn'] + 1e-10):.2%} (QPS)")
     print(f"True Negatives (TN): {metrics['lat']['tn']/(metrics['lat']['tn'] + metrics['lat']['fp'] + 1e-10):.2%} (Latency), {metrics['cpu']['tn']/(metrics['cpu']['tn'] + metrics['cpu']['fp'] + 1e-10):.2%} (CPU), {metrics['qps']['tn']/(metrics['qps']['tn'] + metrics['qps']['fp'] + 1e-10):.2%} (QPS)")
     print(f"False Negatives (FN): {metrics['lat']['fn']/(metrics['lat']['fn'] + metrics['lat']['tp'] + 1e-10):.2%} (Latency), {metrics['cpu']['fn']/(metrics['cpu']['fn'] + metrics['cpu']['tp'] + 1e-10):.2%} (CPU), {metrics['qps']['fn']/(metrics['qps']['fn'] + metrics['qps']['tp'] + 1e-10):.2%} (QPS)")
+    print('\n=========================================\n')
     return services
 
 def is_spike_by_latency(data,k=3):
