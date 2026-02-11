@@ -4,11 +4,9 @@ import json
 import matplotlib.pyplot as plt
 from basic_info.index import basic_info
 from binning_var_entropy.index import b_v_e
-from spikes.spike_detector import is_spike
-# pd.set_option("display.max_columns", None)
-# pd.set_option("display.max_rows", None)
-# pd.set_option("display.width", None)
-# pd.set_option("display.max_colwidth", None)
+from anomaly_detection.index import anomaly_detection
+from root_cause_analysis.index import root_cause_analysis
+
 df = pd.read_csv("logs.csv",sep=";")
 
 df["AttributesJson"] = df["AttributesJson"].apply(json.loads)
@@ -27,14 +25,13 @@ print(is_spike(df))
 # transactions_count = df["TransactionId"].nunique()
 # correlations_count = df["CorrelationId"].nunique()
 
-# print(f"Liczba eventów: {events_count}")
-# print(f"Liczba transakcji (TransactionId): {transactions_count}")
-# print(f"Liczba korelacji (CorrelationId): {correlations_count}")
-
 # podstawowe informacje
 # basic_info(df)
 
 
-# binning wariancja entropia balance ratio
+#binning wariancja entropia balance ratio
 # b_v_e(df)
 
+# anomaly_detection(df)
+
+root_cause_analysis(df)
