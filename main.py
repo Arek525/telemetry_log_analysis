@@ -41,13 +41,6 @@ df = pd.concat(
     axis=1
 )
 
-# predykcja zdarzen (szybki tryb)
-predictions(
-    df,
-    seq_id="CorrelationId",
-    n_prefix=3,
-)
-
 # podstawowe informacje
 basic_info(df)
 
@@ -57,17 +50,24 @@ b_v_e(df)
 # spike detection
 is_spike(df)
 
-# detekcja anomalii
-anomaly_detection(df)
+# trends analysis
+trends.run_analysis(df)
 
 # failure detection
 failure_detection(df)
 
+# detekcja anomalii
+anomaly_detection(df)
+
 # root cause analysis
 root_cause_analysis(df)
 
-# trends analysis
-trends.run_analysis(df)
+# predykcja zdarzen
+predictions(
+    df,
+    seq_id="CorrelationId",
+    n_prefix=3,
+)
 
 # k-means clustering analysis
 kmeans.run_analysis(df)
