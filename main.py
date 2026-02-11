@@ -17,6 +17,13 @@ df = pd.concat(
     [df.drop(columns=["AttributesJson"]), attributes_df],
     axis=1
 )
+# print(df.head())
+# wykrywanie spike'ów
+print(is_spike(df))
+# 
+# events_count = len(df)
+# transactions_count = df["TransactionId"].nunique()
+# correlations_count = df["CorrelationId"].nunique()
 
 # podstawowe informacje
 # basic_info(df)
