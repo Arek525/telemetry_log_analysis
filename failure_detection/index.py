@@ -62,7 +62,10 @@ def is_failure_candidate_row(row, thr):
 
 
 def failure_detection(df, stats_path=None):
-    print("\n=== Failure detection ===")
+    sep = "=" * 65
+    print(f"\n{sep}")
+    print("  FAILURE DETECTION")
+    print(sep)
 
     df2 = df.copy()
 
