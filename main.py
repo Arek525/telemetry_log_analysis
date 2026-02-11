@@ -4,7 +4,8 @@ import json
 import matplotlib.pyplot as plt
 from basic_info.index import basic_info
 from binning_var_entropy.index import b_v_e
-from failure_detection.index import failure_detection
+from anomaly_detection.index import anomaly_detection
+from root_cause_analysis.index import root_cause_analysis
 
 df = pd.read_csv("logs.csv",sep=";")
 
@@ -17,14 +18,6 @@ df = pd.concat(
     axis=1
 )
 
-events_count = len(df)
-transactions_count = df["TransactionId"].nunique()
-correlations_count = df["CorrelationId"].nunique()
-
-print(f"Liczba eventów: {events_count}")
-print(f"Liczba transakcji (TransactionId): {transactions_count}")
-print(f"Liczba korelacji (CorrelationId): {correlations_count}")
-
 # podstawowe informacje
 # basic_info(df)
 
@@ -32,4 +25,6 @@ print(f"Liczba korelacji (CorrelationId): {correlations_count}")
 #binning wariancja entropia balance ratio
 # b_v_e(df)
 
-failure_detection(df, stats_path="SyntheticLogGenerator/logs.csv.stats.json")
+# anomaly_detection(df)
+
+root_cause_analysis(df)
