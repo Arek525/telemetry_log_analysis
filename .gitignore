@@ -50,7 +50,6 @@ logs*.csv
 ####################################
 # EXPERIMENT OUTPUTS
 ####################################
-plots/
 figures/
 charts/
 reports/
