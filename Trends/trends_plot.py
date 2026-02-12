@@ -21,6 +21,12 @@ def plot_trends(buckets: pd.DataFrame, cfg: object, output_path: str = "trend_an
     else:
         plot_data = buckets.copy()
 
+    # Show only recent window to keep trend lines readable on large datasets.
+    if isinstance(plot_data.index, pd.DatetimeIndex) and not plot_data.empty:
+        end_ts = plot_data.index.max()
+        start_ts = end_ts - pd.Timedelta(hours=12)
+        plot_data = plot_data.loc[start_ts:end_ts]
+
     plt.figure(figsize=(12, 6))
 
     # Plot raw metric aggregation

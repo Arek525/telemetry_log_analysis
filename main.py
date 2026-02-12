@@ -17,6 +17,9 @@ import time
 start = time.perf_counter()
 
 base_dir = Path(__file__).resolve().parent
+plots_dir = base_dir / "outputs" / "plots"
+plots_dir.mkdir(parents=True, exist_ok=True)
+
 candidate_paths = [
     base_dir / "logs.csv",
     base_dir / "SyntheticLogGenerator" / "logs.csv",
@@ -42,7 +45,7 @@ df = pd.concat(
 )
 
 # podstawowe informacje
-basic_info(df)
+basic_info(df, plots_dir=str(plots_dir))
 
 # binning wariancja entropia balance ratio
 b_v_e(df)
@@ -51,7 +54,7 @@ b_v_e(df)
 is_spike(df)
 
 # trends analysis
-trends.run_analysis(df)
+trends.run_analysis(df, output_dir=str(plots_dir))
 
 # failure detection
 failure_detection(df)

@@ -1,0 +1,524 @@
+=== Podstawowe statystyki ===
+Liczba eventów: 1683588
+Liczba transakcji (TransactionId): 246376
+Liczba korelacji (CorrelationId): 246376
+
+=== Rozkład Priority ===
+Priority
+info    1652724
+warn      21560
+crit       8373
+err         931
+Name: count, dtype: int64
+
+=== Rozkład EventCode ===
+EventCode
+100      40296
+200    1612428
+429      20991
+430        569
+500       8373
+501        141
+998         21
+999        769
+Name: count, dtype: int64
+
+=== Rozkład SourceSystem ===
+SourceSystem
+InventoryService       281505
+ApiGateway             280882
+OrderService           280755
+NotificationService    280360
+AuthService            280135
+PaymentService         279951
+Name: count, dtype: int64
+
+=== Rozkład Scenario ===
+Scenario
+PasswordReset           166553
+BulkImport              164921
+CheckoutWithCard        164542
+ReportGeneration        164528
+EmailConfirmation       164430
+UserLogin               164428
+OrderPlacement          163899
+CheckoutWithTransfer    163783
+StockReservation        163684
+RefundProcessing        161793
+TechnicalBackground      41027
+Name: count, dtype: int64
+
+=== Binning, wariancja, entropia, balance ratio ===
+Metryka: LatencyMs, liczba binow: 20
+Okresy wziete z flag: SpikeWindow, FailureWindow, TrendWindow
+
+--- bez_spike ---
+[20.00, 518.90): 1589776
+[518.90, 1017.80): 6752
+[1017.80, 1516.70): 6979
+[1516.70, 2015.60): 7188
+[2015.60, 2514.50): 610
+[2514.50, 3013.40): 44
+[3013.40, 3512.30): 48
+[3512.30, 4011.20): 47
+[4011.20, 4510.10): 44
+[4510.10, 5009.00): 58
+[5009.00, 5507.90): 47
+[5507.90, 6006.80): 45
+[6006.80, 6505.70): 44
+[6505.70, 7004.60): 32
+[7004.60, 7503.50): 48
+[7503.50, 8002.40): 54
+[8002.40, 8501.30): 38
+[8501.30, 9000.20): 38
+[9000.20, 9499.10): 56
+[9499.10, 9998.00): 56
+events=1612004 | wariancja=119880312704.3600 | entropia=0.1325 | balance max/min=49680.5000 | balance max/mediana=33120.3333
+
+--- ze_spike ---
+[20.00, 518.90): 71271
+[518.90, 1017.80): 284
+[1017.80, 1516.70): 0
+[1516.70, 2015.60): 0
+[2015.60, 2514.50): 1
+[2514.50, 3013.40): 1
+[3013.40, 3512.30): 2
+[3512.30, 4011.20): 3
+[4011.20, 4510.10): 0
+[4510.10, 5009.00): 1
+[5009.00, 5507.90): 3
+[5507.90, 6006.80): 4
+[6006.80, 6505.70): 1
+[6505.70, 7004.60): 3
+[7004.60, 7503.50): 0
+[7503.50, 8002.40): 0
+[8002.40, 8501.30): 2
+[8501.30, 9000.20): 0
+[9000.20, 9499.10): 5
+[9499.10, 9998.00): 3
+events=71584 | wariancja=241171136.6600 | entropia=0.0439 | balance max/min=71271.0000 | balance max/mediana=47514.0000
+
+--- z_failure ---
+[20.00, 518.90): 0
+[518.90, 1017.80): 6752
+[1017.80, 1516.70): 6979
+[1516.70, 2015.60): 7188
+[2015.60, 2514.50): 548
+[2514.50, 3013.40): 0
+[3013.40, 3512.30): 1
+[3512.30, 4011.20): 1
+[4011.20, 4510.10): 0
+[4510.10, 5009.00): 2
+[5009.00, 5507.90): 0
+[5507.90, 6006.80): 0
+[6006.80, 6505.70): 1
+[6505.70, 7004.60): 1
+[7004.60, 7503.50): 2
+[7503.50, 8002.40): 1
+[8002.40, 8501.30): 0
+[8501.30, 9000.20): 0
+[9000.20, 9499.10): 0
+[9499.10, 9998.00): 1
+events=21477 | wariancja=6160026.5275 | entropia=1.7219 | balance max/min=7188.0000 | balance max/mediana=7188.0000
+
+--- z_trendem ---
+[20.00, 518.90): 142817
+[518.90, 1017.80): 284
+[1017.80, 1516.70): 0
+[1516.70, 2015.60): 0
+[2015.60, 2514.50): 8
+[2514.50, 3013.40): 6
+[3013.40, 3512.30): 4
+[3512.30, 4011.20): 2
+[4011.20, 4510.10): 3
+[4510.10, 5009.00): 2
+[5009.00, 5507.90): 8
+[5507.90, 6006.80): 3
+[6006.80, 6505.70): 3
+[6505.70, 7004.60): 2
+[7004.60, 7503.50): 3
+[7503.50, 8002.40): 6
+[8002.40, 8501.30): 5
+[8501.30, 9000.20): 4
+[9000.20, 9499.10): 2
+[9499.10, 9998.00): 4
+events=143166 | wariancja=968597564.6100 | entropia=0.0281 | balance max/min=71408.5000 | balance max/mediana=40804.8571
+
+Porownanie wzgledem bez_spike:
+- ze_spike: wariancja x0.0020, delta entropii -0.0886
+- z_failure: wariancja x0.0001, delta entropii +1.5894
+- z_trendem: wariancja x0.0081, delta entropii -0.1044
+
+=========================================
+SPIKES BY SERVICE:
+Service: ApiGateway, Total Spikes: 41327, Latency Spikes: 14822, CPU Spikes: 14636, QPS Spikes: 11869
+Service: PaymentService, Total Spikes: 41615, Latency Spikes: 14868, CPU Spikes: 14719, QPS Spikes: 12028
+Service: NotificationService, Total Spikes: 41921, Latency Spikes: 15021, CPU Spikes: 14834, QPS Spikes: 12066
+Service: OrderService, Total Spikes: 41361, Latency Spikes: 14756, CPU Spikes: 14674, QPS Spikes: 11931
+Service: AuthService, Total Spikes: 41249, Latency Spikes: 14741, CPU Spikes: 14638, QPS Spikes: 11870
+Service: InventoryService, Total Spikes: 41466, Latency Spikes: 14814, CPU Spikes: 14699, QPS Spikes: 11953
+
+===============================
+
+OVERALL SPIKES:
+
+Overall spikes detected by Latency: 89022
+Overall spikes detected by CPU: 88200
+Overall spikes detected by QPS: 71717
+Total (sum): 248939
+
+===============================
+
+PRECISION / RECALL / F1:
+Latency:
+  Precision: 77.77%
+  Recall:    100.00%
+  F1-score:  87.50%
+
+CPU:
+  Precision: 92.03%
+  Recall:    100.00%
+  F1-score:  95.85%
+
+QPS:
+  Precision: 100.00%
+  Recall:    100.00%
+  F1-score:  100.00%
+
+
+=========================================
+
+
+--- Analiza Trendów (Trends Analytics) ---
+System źródłowy: OrderService
+Liczba wierszy (po filtracji): 280755
+TrendWindow == True: 23874
+Liczba przedziałów TrendWindow == True (events): 2
+Buckets: 8018  bucket_seconds=120  metric=LatencyMs  agg=median
+Wykryte buckety trendu: 295
+TrendWindow == True (buckets): 683
+Precision: 0.973
+Recall:    0.420
+F1:        0.587
+Czas wykonania [s]: 0.79
+[TrendsPlot] Plot saved to /home/alorek/szkola/projekty/idt/outputs/plots/trend_analysis.png
+
+=================================================================
+  FAILURE DETECTION
+=================================================================
+Znalezione failure candidates: 17772
+
+ANALIZA NA BAZIE KODÓW (EventCode 500/501)
+True positives 8512
+True negatives 1665814
+False positives 9260
+False negatives 2
+precision: 0.479 (47.896%)
+recall:    1.000 (99.977%)
+accuracy:  0.994 (99.450%)
+f1:        0.648 (64.765%)
+
+ANALIZA NA BAZIE FLAGI FAILURE WINDOW
+True positives 16992
+True negatives 1661331
+False positives 780
+False negatives 4485
+precision: 0.956 (95.611%)
+recall:    0.791 (79.117%)
+accuracy:  0.997 (99.687%)
+f1:        0.866 (86.586%)
+
+PROPAGACJA (CorrelationId): gdy pierwszy failure w systemie X, ile kandydatów w systemach Y w tej samej korelacji
+    FirstFailSystem        SourceSystem  Events  Candidates  CandidateRate
+         ApiGateway          ApiGateway    1020         830       0.813725
+         ApiGateway    InventoryService     700         435       0.621429
+         ApiGateway        OrderService     717         445       0.620642
+         ApiGateway NotificationService     755         459       0.607947
+         ApiGateway      PaymentService     738         446       0.604336
+         ApiGateway         AuthService     783         460       0.587484
+        AuthService         AuthService     971         778       0.801236
+        AuthService    InventoryService     688         429       0.623547
+        AuthService        OrderService     656         405       0.617378
+        AuthService      PaymentService     693         421       0.607504
+        AuthService          ApiGateway     697         420       0.602582
+        AuthService NotificationService     686         404       0.588921
+   InventoryService    InventoryService    1056         861       0.815341
+   InventoryService NotificationService     763         482       0.631717
+   InventoryService        OrderService     749         463       0.618158
+   InventoryService          ApiGateway     793         487       0.614124
+   InventoryService      PaymentService     735         448       0.609524
+   InventoryService         AuthService     747         432       0.578313
+NotificationService NotificationService    1036         825       0.796332
+NotificationService          ApiGateway     766         468       0.610966
+NotificationService    InventoryService     740         436       0.589189
+NotificationService      PaymentService     744         430       0.577957
+NotificationService        OrderService     710         406       0.571831
+NotificationService         AuthService     733         405       0.552524
+       OrderService        OrderService     968         779       0.804752
+       OrderService         AuthService     639         391       0.611894
+       OrderService    InventoryService     679         406       0.597938
+       OrderService NotificationService     683         407       0.595900
+       OrderService          ApiGateway     690         402       0.582609
+       OrderService      PaymentService     643         373       0.580093
+     PaymentService      PaymentService     982         784       0.798371
+     PaymentService    InventoryService     706         444       0.628895
+     PaymentService        OrderService     712         430       0.603933
+     PaymentService         AuthService     738         444       0.601626
+     PaymentService          ApiGateway     700         420       0.600000
+     PaymentService NotificationService     710         417       0.587324
+
+=== ANOMALY DETECTION (Isolation Forest) ===
+Zakres danych: 1,683,588 rekordow
+Cechy modelu: LatencyMs, CpuUsage, MemoryUsageMb, DiskQueueLength, NetworkErrors, LocalQps, RequestSizeBytes, ResponseSizeBytes
+
+Parametry modelu:
+- contamination: 0.000506 (5xx_rate/10, 5xx=8514)
+- n_estimators: 100
+
+Wynik detekcji:
+- Wykryto anomalii przez Isolation Forest: 852
+- Udzial oznaczonych anomalii: 0.0506%
+
+Ewaluacja (porownanie do IsAnomaly):
+- Precision: 0.4883
+- Recall: 0.5266
+- F1-score: 0.5067
+- Confusion matrix: TP=416  TN=1682362  FP=436  FN=374
+
+=== TOP 3 SCENARIUSZE Z ANOMALIAMI (IF) ===
+1. BulkImport: 92
+2. CheckoutWithTransfer: 90
+3. PasswordReset: 89
+
+--- Scenario: BulkImport ---
+Powody anomalii (top):
+- latencja: 92
+- dysk: 57
+- sieć: 35
+Rekomendacje:
+- sprawdź p95/p99 opóźnienia per endpoint i zależności
+- zweryfikuj timeouts i kolejki requestów
+
+--- Scenario: CheckoutWithTransfer ---
+Powody anomalii (top):
+- latencja: 90
+- dysk: 64
+- sieć: 26
+Rekomendacje:
+- sprawdź p95/p99 opóźnienia per endpoint i zależności
+- zweryfikuj timeouts i kolejki requestów
+
+--- Scenario: PasswordReset ---
+Powody anomalii (top):
+- latencja: 89
+- dysk: 50
+- sieć: 38
+- CPU: 1
+Rekomendacje:
+- sprawdź p95/p99 opóźnienia per endpoint i zależności
+- zweryfikuj timeouts i kolejki requestów
+=== KONIEC ANOMALY DETECTION ===
+
+=================================================================
+  ROOT CAUSE ANALYSIS
+=================================================================
+
+CorrelationId : b5145bd0a88c42a88bb94e9206d7e286
+Scenariusz    : PasswordReset
+Regiony       : eu-central, us-east
+Węzły         : node-6, node-3, node-1, node-4, node-2, node-9
+Liczba eventów: 9
+
+── Ścieżka przejścia ──
+  OrderService → PaymentService → NotificationService → ApiGateway → InventoryService
+
+── Pierwsze źródło problemu ──
+  System: PaymentService (krok 2)
+  Przyczyny: latencja (z=147.0, n=1), sieć (z=15.5, n=1), rozmiar odpowiedzi (z=10.6, n=1)
+  Flagi: spike latencji (1x), spike CPU (1x), okno trendu (1x)
+
+── Diagnoza per system ──
+  [PaymentService] ← ROOT CAUSE  (1 eventów z problemem)
+    • latencja             z=147.0 (1x) ████████████████████
+    • sieć                 z= 15.5 (1x) ███████████████
+    • rozmiar odpowiedzi   z= 10.6 (1x) ██████████
+    ⚑ spike latencji: 1x
+    ⚑ spike CPU: 1x
+    ⚑ okno trendu: 1x
+
+── Ofiary przeciążenia ──
+  • NotificationService
+  • ApiGateway
+  • InventoryService
+
+── Co działo się przed awarią ──
+  SourceSystem  EventCode  LatencyMs  CpuUsage  DiskQueueLength  NetworkErrors  Retries                                           Description
+  OrderService        200         86     36.38               24              1        0   PasswordReset: step=0 system=OrderService status=OK
+PaymentService        200         56     19.79               25              2        0 PasswordReset: step=1 system=PaymentService status=OK
+
+── Ocena pre-failure ──
+  • Narastający trend sieć: 1 → 2 (+1)
+  • Flaga 'okno trendu' aktywna w 2/2 eventów przed awarią
+
+── Rekomendacje ──
+  1. Sprawdź p95/p99 opóźnienia per endpoint i zależności downstream
+  2. Zweryfikuj timeouty, connection-pool i kolejki requestów
+  3. Monitoruj: LatencyMs, DiskQueueLength, NetworkErrors
+  4. Sprawdź timeouty, retry-storm i błędy połączeń
+  5. Zweryfikuj obciążenie downstream, limity połączeń i DNS
+  6. Monitoruj: NetworkErrors, Retries, LatencyMs
+  7. Nietypowy rozmiar odpowiedzi — sprawdź serializację i limity
+  8. Rozważ lazy-loading / paginację dużych odpowiedzi
+  9. Monitoruj: ResponseSizeBytes, LatencyMs, MemoryUsageMb
+
+── Co monitorować ──
+  Kolumny: IsSpikeByCpu, IsSpikeByLatency, LatencyMs, NetworkErrors, ResponseSizeBytes, TrendWindow
+
+=================================================================
+
+=== Raport predykcji zdarzen ===
+Konfiguracja i zakres danych:
+- Liczba eventow uzytych do modeli event-level: 1,683,588 / 1,683,588
+- Liczba transakcji uzytych do modelu sekwencyjnego: 246,376
+- Dlugosc prefiksu sekwencji (n_prefix): 3
+- Tryb danych: pelny zbior (bez samplingu)
+
+=== Klasyfikacja event-level: Failure ===
+Precision (Precyzja): 98.32% -> jaki procent wykrytych awarii byl poprawny.
+Recall (Czulosc): 100.00% -> jaki procent wszystkich awarii zostal wykryty.
+F1-score: 99.16% -> zbalansowana jakosc (ocena: bardzo dobra).
+
+=== Klasyfikacja event-level: Anomaly ===
+Precision (Precyzja): 86.59% -> jaki procent wykrytych anomalii byl poprawny.
+Recall (Czulosc): 100.00% -> jaki procent wszystkich anomalii zostal wykryty.
+F1-score: 92.81% -> zbalansowana jakosc (ocena: bardzo dobra).
+
+=== Regresja event-level: LatencyMs ===
+MAE (Mean Absolute Error): 45.774 ms -> sredni blad bezwzgledny predykcji opoznienia.
+RMSE (Root Mean Squared Error): 143.645 ms -> blad mocniej karzacy duze pomylki.
+R2 (Wspolczynnik determinacji): 0.544 -> jakosc dopasowania (ocena: dobra).
+Porownanie z baseline (mediana z train): MAE modelu 45.774 ms vs MAE baseline 40.845 ms (poprawa: -12.07%).
+
+=== Predykcja sekwencyjna transaction-level ===
+Precision (Precyzja): 87.30% -> jaki procent alertow o awarii transakcji byl poprawny.
+Recall (Czulosc): 86.93% -> jaki procent transakcji problemowych wykryto juz po prefiksie.
+F1-score: 87.11% -> zbalansowana jakosc (ocena: dobra). Uzyte ID sekwencji: CorrelationId.
+
+=== Rekomendacje na podstawie wyniku ===
+1. Model regresji jest niewiele lepszy od baseline; sprawdz inne modele lub transformacje celu (np. log LatencyMs).
+
+--- Analiza K-Means (K-Means Analytics) ---
+
+Czas przygotowania danych [s]: 0.18
+
+==============================
+K = 3
+Rozmiary klastrów:
+0    793296
+1     93566
+2    796726
+Name: count, dtype: int64
+KMeans czas [s]: 2.82
+
+==============================
+K = 5
+Rozmiary klastrów:
+0    460381
+1     21996
+2     71390
+3    461734
+4    668087
+Name: count, dtype: int64
+KMeans czas [s]: 4.74
+
+==============================
+K = 8
+Rozmiary klastrów:
+0    396730
+1     39266
+2    398393
+3     21445
+4    397862
+5     32292
+6       592
+7    397008
+Name: count, dtype: int64
+KMeans czas [s]: 8.05
+
+Czas klasteryzacji (wszystkie K) [s]: 15.63
+
+========================================
+ANALIZA KLASTRÓW DLA K = 3
+========================================
+
+--- TABELA 1: ŚREDNIE CECH ---
+          count  LatencyMs  CpuUsage  MemoryUsageMb  DiskQueueLength  NetworkErrors  LocalQps  RequestSizeBytes  ResponseSizeBytes
+cluster                                                                                                                           
+0        793296      56.51     32.89         915.49             9.79           1.00     30.04          10145.04           10155.83
+1         93566     607.59     86.82        2093.19            85.64          11.61    238.02          22100.00           22082.48
+2        796726      57.57     33.18        2320.29             9.94           1.00     30.02          10173.65           10159.83
+
+--- TABELA 2: PROCENTY ---
+          count  pct_IsAnomaly  pct_EventCode_500_501  pct_EventCode_998_999  pct_IsSpikeByLatency  pct_IsSpikeByCpu  pct_IsSpikeByQps
+cluster                                                                                                                               
+0        793296         0.0000                 0.0000                 0.0000                0.0001            0.0001            0.0001
+1         93566         0.0084                 0.0909                 0.0084                0.7387            0.8652            0.7641
+2        796726         0.0000                 0.0000                 0.0000                0.0001            0.0002            0.0002
+
+========================================
+ANALIZA KLASTRÓW DLA K = 5
+========================================
+
+--- TABELA 1: ŚREDNIE CECH ---
+          count  LatencyMs  CpuUsage  MemoryUsageMb  DiskQueueLength  NetworkErrors  LocalQps  RequestSizeBytes  ResponseSizeBytes
+cluster                                                                                                                           
+0        460381      57.58     33.22        2204.01             9.95           1.00     30.03          10113.90            4988.32
+1         21996    1474.11     76.56        1869.39           135.71          18.41     35.63          10945.53           10925.01
+2         71390     340.68     90.00        2162.44            70.26           9.53    300.83          25577.51           25552.75
+3        461734      57.55     33.11        2204.21             9.91           1.00     30.02          10221.93           15308.70
+4        668087      56.46     32.86         812.47             9.78           1.00     30.04          10146.35           10159.99
+
+--- TABELA 2: PROCENTY ---
+          count  pct_IsAnomaly  pct_EventCode_500_501  pct_EventCode_998_999  pct_IsSpikeByLatency  pct_IsSpikeByCpu  pct_IsSpikeByQps
+cluster                                                                                                                               
+0        460381         0.0000                 0.0000                 0.0000                0.0003            0.0004            0.0003
+1         21996         0.0345                 0.3826                 0.0345                1.0000            0.4326            0.0069
+2         71390         0.0004                 0.0005                 0.0004                0.6577            0.9991            0.9984
+3        461734         0.0000                 0.0000                 0.0000                0.0002            0.0002            0.0002
+4        668087         0.0000                 0.0000                 0.0000                0.0001            0.0001            0.0001
+
+========================================
+ANALIZA KLASTRÓW DLA K = 8
+========================================
+
+--- TABELA 1: ŚREDNIE CECH ---
+          count  LatencyMs  CpuUsage  MemoryUsageMb  DiskQueueLength  NetworkErrors  LocalQps  RequestSizeBytes  ResponseSizeBytes
+cluster                                                                                                                           
+0        396730      56.53     32.84         930.73             9.80           1.00     30.02          10133.90            4946.03
+1         39266     340.31     89.99        2157.78            70.28           9.54    302.17          25097.48           13764.45
+2        398393      57.56     33.18        2306.34             9.93           1.00     30.00          15370.40           10149.97
+3         21445    1319.45     77.33        1855.44           134.85          18.14     30.47          10119.79           10120.49
+4        397862      56.53     32.93         930.02             9.78           1.00     30.04          10152.57           15354.79
+5         32292     342.09     89.97        2168.22            70.17           9.51    298.47          26107.01           39807.64
+6           592    6974.49     49.81        2393.37           160.61          26.98    214.40          39092.67           38399.48
+7        397008      57.60     33.19        2308.99             9.94           1.00     30.01           4960.98           10167.64
+
+--- TABELA 2: PROCENTY ---
+          count  pct_IsAnomaly  pct_EventCode_500_501  pct_EventCode_998_999  pct_IsSpikeByLatency  pct_IsSpikeByCpu  pct_IsSpikeByQps
+cluster                                                                                                                               
+0        396730         0.0000                 0.0000                 0.0000                0.0001            0.0000            0.0000
+1         39266         0.0003                 0.0010                 0.0003                0.6562            0.9987            0.9975
+2        398393         0.0000                 0.0000                 0.0000                0.0000            0.0001            0.0001
+3         21445         0.0069                 0.3936                 0.0069                1.0000            0.4309            0.0010
+4        397862         0.0000                 0.0000                 0.0000                0.0001            0.0001            0.0001
+5         32292         0.0011                 0.0000                 0.0011                0.6590            0.9994            0.9992
+6           592         1.0000                 0.0000                 1.0000                1.0000            0.4916            0.2128
+7        397008         0.0000                 0.0000                 0.0000                0.0002            0.0002            0.0002
+
+Czas analizy tabel [s]: 2.69
+
+Liczba wierszy w analizie: 1683588
+Kształt macierzy cech: (1683588, 8)
+
+Całkowity czas wykonania [s]: 18.50
+Czas wykonania: 214.254 s

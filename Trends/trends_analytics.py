@@ -164,7 +164,7 @@ def detect_trend(cfg: Config, buckets: pd.DataFrame) -> pd.DataFrame:
 
     return work
 
-def run_analysis(df_in: pd.DataFrame) -> None:
+def run_analysis(df_in: pd.DataFrame, output_dir: str = ".") -> None:
     print("\n--- Analiza Trendów (Trends Analytics) ---")
     cfg = Config(
         source_system="OrderService",
@@ -235,7 +235,9 @@ def run_analysis(df_in: pd.DataFrame) -> None:
     print(f"Czas wykonania [s]: {elapsed:.2f}")
     
     # Generate visualization
-    plot_trends(det, cfg, output_path="trend_analysis.png")
+    out_dir = Path(output_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    plot_trends(det, cfg, output_path=str(out_dir / "trend_analysis.png"))
 
 if __name__ == "__main__":
     # For testing, assumes main.py logic creates df
