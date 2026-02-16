@@ -1,93 +1,126 @@
-# projekt-matam
+# Telemetry Log Analysis (Telemetry Data Engineering Project)
 
+This repository contains a team project developed with my university classmates for the course **Telemetry Data Engineering**, delivered in collaboration with Dynatrace.
 
+The goal is to analyze large, structured application logs from distributed services, detect abnormal behavior, and investigate probable root causes of incidents.
 
-## Getting started
+## Project Context
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+- Course topic: log and telemetry analysis in distributed systems
+- Team setup: collaborative student project
+- Data source: synthetic but realistic logs generated for analysis scenarios
+- Focus: practical incident detection and diagnosis (spikes, anomalies, failures, propagation)
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## What We Analyze
 
-## Add your files
+The logs represent multi-service business flows (for example: `AuthService`, `ApiGateway`, `OrderService`, `PaymentService`) and include:
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+- service and correlation context (`SourceSystem`, `TransactionId`, `CorrelationId`)
+- event metadata (`Priority`, `EventKind`, `EventCode`, `Scenario`)
+- performance and system metrics (`LatencyMs`, `CpuUsage`, `MemoryUsageMb`, `DiskQueueLength`, `LocalQps`, `NetworkErrors`, `Retries`)
+- flags/windows for synthetic incident patterns (`SpikeWindow`, `FailureWindow`, `TrendWindow`)
 
+## Main Analysis Modules
+
+- `basic_info/index.py`
+  - dataset-level statistics
+  - distributions of key categorical fields
+  - histograms for latency, CPU, QPS, and disk queue length
+
+- `spikes/spike_detector.py`
+  - heuristic spike detection for latency/CPU/QPS
+  - per-service spike summaries
+  - precision/recall/F1 against available ground-truth labels
+
+- `failure_detection/index.py`
+  - failure candidate scoring based on priority + metric thresholds
+  - failure window detection from 5xx density in time windows
+  - confusion-matrix evaluation and propagation summary by `CorrelationId`
+
+- `anomaly_detection/index.py`
+  - Isolation Forest anomaly detection over normalized numeric features
+  - adaptive contamination estimate from 5xx base rate
+  - anomaly metrics (precision/recall/F1) when labels are present
+  - top anomalous scenarios and human-readable recommendations
+
+- `root_cause_analysis/index.py`
+  - correlation-level timeline reconstruction
+  - first problematic service identification
+  - victim/impact path analysis
+  - pre-failure assessment and watch-list recommendations
+
+- `binning_var_entropy/index.py`
+  - metric binning
+  - variance/entropy/balance-ratio comparisons across normal vs spike/failure/trend windows
+
+## Repository Structure
+
+```text
+.
+├── main.py
+├── basic_info/
+├── spikes/
+├── failure_detection/
+├── anomaly_detection/
+├── root_cause_analysis/
+├── binning_var_entropy/
+├── SyntheticLogGenerator/      # .NET generator for realistic telemetry logs
+└── info/                       # course notes/config snippets
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/ug_jn/in-ynieria-danych-telemetrycznych-2025-26/projekt-matam.git
-git branch -M main
-git push -uf origin main
+
+## Data Generation
+
+`SyntheticLogGenerator/` is a C#/.NET tool that generates large telemetry datasets (`logs.csv`) with controlled rates of:
+
+- spike windows
+- failure windows
+- trend windows
+- anomalies
+
+It can also save generation statistics for validation and benchmarking.
+
+## Setup
+
+### 1. Python environment
+
+Install required packages:
+
+```bash
+pip install pandas numpy matplotlib scikit-learn
 ```
 
-## Integrate with your tools
+### 2. (Optional) Build/run log generator
 
-* [Set up project integrations](https://gitlab.com/ug_jn/in-ynieria-danych-telemetrycznych-2025-26/projekt-matam/-/settings/integrations)
+From `SyntheticLogGenerator/`:
 
-## Collaborate with your team
+```bash
+dotnet build
+dotnet run
+```
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+This produces `logs.csv` (path configured in `SyntheticLogGenerator/config.json`).
 
-## Test and Deploy
+## Running the Analysis
 
-Use the built-in continuous integration in GitLab.
+The main entry point is:
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+```bash
+python main.py
+```
 
-***
+`main.py` loads `logs.csv`, expands `AttributesJson`, and runs selected analysis modules.  
+You can enable/disable specific steps in `main.py` depending on the experiment.
 
-# Editing this README
+## Typical Investigation Flow
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+1. Generate or load telemetry logs.
+2. Compute baseline stats and metric distributions.
+3. Detect spikes and failure candidates.
+4. Run anomaly detection.
+5. Perform root-cause analysis for suspicious correlations.
+6. Compare behavioral patterns (binning/variance/entropy) between normal and incident windows.
 
-## Suggestions for a good README
+## Why This Project
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+This project demonstrates how to combine classic statistical analysis, heuristic detection, and ML-based anomaly detection in one practical observability workflow.  
+It reflects the type of reasoning used in production monitoring platforms and helps us practice incident-oriented thinking on realistic telemetry data.
