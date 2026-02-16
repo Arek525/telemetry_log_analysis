@@ -39,6 +39,7 @@ htmlcov/
 ####################################
 logs.csv
 logs*.csv
+anomaly_detection_results.csv
 *.parquet
 *.avro
 *.orc
